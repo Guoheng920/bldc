@@ -284,8 +284,10 @@ int main(void) {
 		while (1) {
 			chThdSleepMilliseconds(100);
 			LED_RED_ON();
+			LED_GREEN_OFF();
 			chThdSleepMilliseconds(75);
 			LED_RED_OFF();
+			LED_GREEN_ON();
 		}
 	}
 

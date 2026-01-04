@@ -55,35 +55,51 @@ void hw_init_gpio(void) {
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOF, ENABLE);
 
 	// LEDs
-	palSetPadMode(GPIOB, 0,
+	// palSetPadMode(GPIOB, 0,
+	// 		PAL_MODE_OUTPUT_PUSHPULL |
+	// 		PAL_STM32_OSPEED_HIGHEST);
+	// palSetPadMode(GPIOB, 1,
+	// 		PAL_MODE_OUTPUT_PUSHPULL |
+	// 		PAL_STM32_OSPEED_HIGHEST);
+	//LEDs
+	palSetPadMode(GPIOE, 0,
 			PAL_MODE_OUTPUT_PUSHPULL |
 			PAL_STM32_OSPEED_HIGHEST);
-	palSetPadMode(GPIOB, 1,
+	palSetPadMode(GPIOE, 1,
 			PAL_MODE_OUTPUT_PUSHPULL |
 			PAL_STM32_OSPEED_HIGHEST);
-
 	// ENABLE_GATE
-#ifdef HW60_VEDDER_FIRST_PCB
-	palSetPadMode(GPIOB, 6,
-			PAL_MODE_OUTPUT_PUSHPULL |
-			PAL_STM32_OSPEED_HIGHEST);
-#else
-	palSetPadMode(GPIOB, 5,
-			PAL_MODE_OUTPUT_PUSHPULL |
-			PAL_STM32_OSPEED_HIGHEST);
-#endif
+// #ifdef HW60_VEDDER_FIRST_PCB
+// 	palSetPadMode(GPIOB, 6,
+// 			PAL_MODE_OUTPUT_PUSHPULL |
+// 			PAL_STM32_OSPEED_HIGHEST);
+// #else
+// 	palSetPadMode(GPIOB, 5,
+// 			PAL_MODE_OUTPUT_PUSHPULL |
+// 			PAL_STM32_OSPEED_HIGHEST);
+// #endif
+// 	ENABLE_GATE();
 
-	ENABLE_GATE();
+// ENABLE SHUTDOWN PIN			//gh add
+	palSetPadMode(GPIOF, 10,
+			PAL_MODE_OUTPUT_PUSHPULL |
+			PAL_STM32_OSPEED_HIGHEST);
+
+	palSetPad(GPIOF, 10)
+//end
 
 	// Current filter
-	palSetPadMode(GPIOD, 2,
-			PAL_MODE_OUTPUT_PUSHPULL |
-			PAL_STM32_OSPEED_HIGHEST);
+	// palSetPadMode(GPIOD, 2,
+	// 		PAL_MODE_OUTPUT_PUSHPULL |
+	// 		PAL_STM32_OSPEED_HIGHEST);
 
-	CURRENT_FILTER_OFF();
+	// CURRENT_FILTER_OFF();
 
+	//H桥驱动
 	// GPIOA Configuration: Channel 1 to 3 as alternate function push-pull
 	palSetPadMode(GPIOA, 8, PAL_MODE_ALTERNATE(GPIO_AF_TIM1) |
 			PAL_STM32_OSPEED_HIGHEST |
@@ -105,10 +121,10 @@ void hw_init_gpio(void) {
 			PAL_STM32_OSPEED_HIGHEST |
 			PAL_STM32_PUDR_FLOATING);
 
-	// Hall sensors
-	palSetPadMode(HW_HALL_ENC_GPIO1, HW_HALL_ENC_PIN1, PAL_MODE_INPUT_PULLUP);
-	palSetPadMode(HW_HALL_ENC_GPIO2, HW_HALL_ENC_PIN2, PAL_MODE_INPUT_PULLUP);
-	palSetPadMode(HW_HALL_ENC_GPIO3, HW_HALL_ENC_PIN3, PAL_MODE_INPUT_PULLUP);
+	// // Hall sensors
+	// palSetPadMode(HW_HALL_ENC_GPIO1, HW_HALL_ENC_PIN1, PAL_MODE_INPUT_PULLUP);
+	// palSetPadMode(HW_HALL_ENC_GPIO2, HW_HALL_ENC_PIN2, PAL_MODE_INPUT_PULLUP);
+	// palSetPadMode(HW_HALL_ENC_GPIO3, HW_HALL_ENC_PIN3, PAL_MODE_INPUT_PULLUP);
 
 	// Phase filters
 #ifdef PHASE_FILTER_GPIO
@@ -126,24 +142,33 @@ void hw_init_gpio(void) {
 #endif
 
 	// Fault pin
-	palSetPadMode(GPIOB, 7, PAL_MODE_INPUT_PULLUP);
+	//palSetPadMode(GPIOB, 7, PAL_MODE_INPUT_PULLUP);
 
 	// ADC Pins
-	palSetPadMode(GPIOA, 0, PAL_MODE_INPUT_ANALOG);
-	palSetPadMode(GPIOA, 1, PAL_MODE_INPUT_ANALOG);
-	palSetPadMode(GPIOA, 2, PAL_MODE_INPUT_ANALOG);
-	palSetPadMode(GPIOA, 3, PAL_MODE_INPUT_ANALOG);
-	palSetPadMode(GPIOA, 5, PAL_MODE_INPUT_ANALOG);
-	palSetPadMode(GPIOA, 6, PAL_MODE_INPUT_ANALOG);
+// 	palSetPadMode(GPIOA, 0, PAL_MODE_INPUT_ANALOG);
+// 	palSetPadMode(GPIOA, 1, PAL_MODE_INPUT_ANALOG);
+// 	palSetPadMode(GPIOA, 2, PAL_MODE_INPUT_ANALOG);
+// 	palSetPadMode(GPIOA, 3, PAL_MODE_INPUT_ANALOG);
+// 	palSetPadMode(GPIOA, 5, PAL_MODE_INPUT_ANALOG);
+// 	palSetPadMode(GPIOA, 6, PAL_MODE_INPUT_ANALOG);
 
-	palSetPadMode(GPIOC, 0, PAL_MODE_INPUT_ANALOG);
-	palSetPadMode(GPIOC, 1, PAL_MODE_INPUT_ANALOG);
-	palSetPadMode(GPIOC, 2, PAL_MODE_INPUT_ANALOG);
-	palSetPadMode(GPIOC, 3, PAL_MODE_INPUT_ANALOG);
-	palSetPadMode(GPIOC, 4, PAL_MODE_INPUT_ANALOG);
-#if !defined(HW60_IS_MK3) && !defined(HW60_IS_MK4) && !defined(HW60_IS_MK5) && !defined(HW60_IS_MK6)
-	palSetPadMode(GPIOC, 5, PAL_MODE_INPUT_ANALOG);
-#endif
+// 	palSetPadMode(GPIOC, 0, PAL_MODE_INPUT_ANALOG);
+// 	palSetPadMode(GPIOC, 1, PAL_MODE_INPUT_ANALOG);
+// 	palSetPadMode(GPIOC, 2, PAL_MODE_INPUT_ANALOG);
+// 	palSetPadMode(GPIOC, 3, PAL_MODE_INPUT_ANALOG);
+// 	palSetPadMode(GPIOC, 4, PAL_MODE_INPUT_ANALOG);
+// #if !defined(HW60_IS_MK3) && !defined(HW60_IS_MK4) && !defined(HW60_IS_MK5) && !defined(HW60_IS_MK6)
+// 	palSetPadMode(GPIOC, 5, PAL_MODE_INPUT_ANALOG);
+// #endif
+	palSetPadMode(GPIOA, 0, PAL_MODE_INPUT_ANALOG);		//MOS_TEMP
+	palSetPadMode(GPIOA, 3, PAL_MODE_INPUT_ANALOG);		//IW
+	palSetPadMode(GPIOA, 6, PAL_MODE_INPUT_ANALOG);		//IV
+	palSetPadMode(GPIOB, 0, PAL_MODE_INPUT_ANALOG);		//IU
+	palSetPadMode(GPIOB, 1, PAL_MODE_INPUT_ANALOG);		//VBUS
+	palSetPadMode(GPIOF, 7, PAL_MODE_INPUT_ANALOG);		//BEMF_U
+	palSetPadMode(GPIOF, 8, PAL_MODE_INPUT_ANALOG);		//BEMF_V
+	palSetPadMode(GPIOF, 9, PAL_MODE_INPUT_ANALOG);		//BEMF_W
+
 
 #if defined(HW60_IS_MK6) && defined(HW60_IS_MAX)
 	// DAC as voltage reference for shunt amps
@@ -153,7 +178,9 @@ void hw_init_gpio(void) {
 	DAC->DHR12R1 = 2047;
 #endif
 
+#if defined(HAS_HW_HAS_DRV8301)			//gh add
 	drv8301_init();
+#endif
 
 #if defined(HW60_IS_MK3) || defined(HW60_IS_MK4) || defined(HW60_IS_MK5) || defined(HW60_IS_MK6)
 	terminal_register_command_callback(
@@ -172,27 +199,58 @@ void hw_init_gpio(void) {
 
 void hw_setup_adc_channels(void) {
 	uint8_t t_samp = ADC_SampleTime_15Cycles;
+	/*****************************************
+	  假设每个ADC配置了3个通道
+	  DMA缓冲区数据排列：
+	  adc_dma_buffer[0] = ADC1 - 通道1的转换结果
+	  adc_dma_buffer[1] = ADC2 - 通道1的转换结果  
+	  adc_dma_buffer[2] = ADC3 - 通道1的转换结果
+	  adc_dma_buffer[3] = ADC1 - 通道2的转换结果
+	  adc_dma_buffer[4] = ADC2 - 通道2的转换结果
+	  adc_dma_buffer[5] = ADC3 - 通道2的转换结果
+	  adc_dma_buffer[6] = ADC1 - 通道3的转换结果
+	  adc_dma_buffer[7] = ADC2 - 通道3的转换结果
+	  adc_dma_buffer[8] = ADC3 - 通道3的转换结果
+	// ADC1: 2个通道 (CH1, CH2)
+	// ADC2: 1个通道 (CH1) 
+	// ADC3: 3个通道 (CH1, CH2, CH3)
 
+	// DMA缓冲区排列（交错模式）：
+	// [ADC1_CH1][ADC2_CH1][ADC3_CH1]  // 第1次转换
+	// [ADC1_CH2][ADC2_CH1][ADC3_CH2]  // 第2次转换 (ADC2重复上次值)
+	// [ADC1_CH1][ADC2_CH1][ADC3_CH3]  // 第3次转换 (ADC1循环，ADC2重复)
+	******************************************/
 	// ADC1 regular channels
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_10, 1, t_samp);
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 2, t_samp);
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 3, t_samp);
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_14, 4, t_samp);
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_Vrefint, 5, t_samp);
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_8, 1, t_samp);
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_9, 2, t_samp);
+	//ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 3, t_samp);
+
+	// ADC_RegularChannelConfig(ADC1, ADC_Channel_10, 1, t_samp);
+	// ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 2, t_samp);
+	// ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 3, t_samp);
+	// ADC_RegularChannelConfig(ADC1, ADC_Channel_14, 4, t_samp);
+	// ADC_RegularChannelConfig(ADC1, ADC_Channel_Vrefint, 5, t_samp);
 
 	// ADC2 regular channels
-	ADC_RegularChannelConfig(ADC2, ADC_Channel_11, 1, t_samp);
-	ADC_RegularChannelConfig(ADC2, ADC_Channel_1, 2, t_samp);
-	ADC_RegularChannelConfig(ADC2, ADC_Channel_6, 3, t_samp);
-	ADC_RegularChannelConfig(ADC2, ADC_Channel_15, 4, t_samp);
-	ADC_RegularChannelConfig(ADC2, ADC_Channel_0, 5, t_samp);
+	ADC_RegularChannelConfig(ADC2, ADC_Channel_6, 1, t_samp);
+
+	// ADC_RegularChannelConfig(ADC2, ADC_Channel_11, 1, t_samp);
+	// ADC_RegularChannelConfig(ADC2, ADC_Channel_1, 2, t_samp);
+	// ADC_RegularChannelConfig(ADC2, ADC_Channel_6, 3, t_samp);
+	// ADC_RegularChannelConfig(ADC2, ADC_Channel_15, 4, t_samp);
+	// ADC_RegularChannelConfig(ADC2, ADC_Channel_0, 5, t_samp);
 
 	// ADC3 regular channels
-	ADC_RegularChannelConfig(ADC3, ADC_Channel_12, 1, t_samp);
-	ADC_RegularChannelConfig(ADC3, ADC_Channel_2, 2, t_samp);
-	ADC_RegularChannelConfig(ADC3, ADC_Channel_3, 3, t_samp);
-	ADC_RegularChannelConfig(ADC3, ADC_Channel_13, 4, t_samp);
-	ADC_RegularChannelConfig(ADC3, ADC_Channel_1, 5, t_samp);
+	ADC_RegularChannelConfig(ADC3, ADC_Channel_3, 1, t_samp);
+	ADC_RegularChannelConfig(ADC3, ADC_Channel_7, 2, t_samp);
+	ADC_RegularChannelConfig(ADC3, ADC_Channel_6, 3, t_samp);
+	ADC_RegularChannelConfig(ADC3, ADC_Channel_5, 4, t_samp);
+
+	// ADC_RegularChannelConfig(ADC3, ADC_Channel_12, 1, t_samp);
+	// ADC_RegularChannelConfig(ADC3, ADC_Channel_2, 2, t_samp);
+	// ADC_RegularChannelConfig(ADC3, ADC_Channel_3, 3, t_samp);
+	// ADC_RegularChannelConfig(ADC3, ADC_Channel_13, 4, t_samp);
+	// ADC_RegularChannelConfig(ADC3, ADC_Channel_1, 5, t_samp);
 
 	// Current oversampling
 //	for (int i = 6;i <= 15;i++) {
@@ -202,15 +260,24 @@ void hw_setup_adc_channels(void) {
 //	}
 
 	// Injected channels
-	ADC_InjectedChannelConfig(ADC1, ADC_Channel_10, 1, t_samp);
-	ADC_InjectedChannelConfig(ADC2, ADC_Channel_11, 1, t_samp);
-	ADC_InjectedChannelConfig(ADC3, ADC_Channel_12, 1, t_samp);
-	ADC_InjectedChannelConfig(ADC1, ADC_Channel_10, 2, t_samp);
-	ADC_InjectedChannelConfig(ADC2, ADC_Channel_11, 2, t_samp);
-	ADC_InjectedChannelConfig(ADC3, ADC_Channel_12, 2, t_samp);
-	ADC_InjectedChannelConfig(ADC1, ADC_Channel_10, 3, t_samp);
-	ADC_InjectedChannelConfig(ADC2, ADC_Channel_11, 3, t_samp);
-	ADC_InjectedChannelConfig(ADC3, ADC_Channel_12, 3, t_samp);
+	ADC_InjectedChannelConfig(ADC1, ADC_Channel_8, 1, t_samp);
+	ADC_InjectedChannelConfig(ADC2, ADC_Channel_6, 1, t_samp);
+	ADC_InjectedChannelConfig(ADC3, ADC_Channel_3, 1, t_samp);
+	ADC_InjectedChannelConfig(ADC1, ADC_Channel_8, 2, t_samp);
+	ADC_InjectedChannelConfig(ADC2, ADC_Channel_6, 2, t_samp);
+	ADC_InjectedChannelConfig(ADC3, ADC_Channel_3, 2, t_samp);
+	ADC_InjectedChannelConfig(ADC1, ADC_Channel_8, 3, t_samp);
+	ADC_InjectedChannelConfig(ADC2, ADC_Channel_6, 3, t_samp);
+	ADC_InjectedChannelConfig(ADC3, ADC_Channel_3, 3, t_samp);
+	// ADC_InjectedChannelConfig(ADC1, ADC_Channel_10, 1, t_samp);
+	// ADC_InjectedChannelConfig(ADC2, ADC_Channel_11, 1, t_samp);
+	// ADC_InjectedChannelConfig(ADC3, ADC_Channel_12, 1, t_samp);
+	// ADC_InjectedChannelConfig(ADC1, ADC_Channel_10, 2, t_samp);
+	// ADC_InjectedChannelConfig(ADC2, ADC_Channel_11, 2, t_samp);
+	// ADC_InjectedChannelConfig(ADC3, ADC_Channel_12, 2, t_samp);
+	// ADC_InjectedChannelConfig(ADC1, ADC_Channel_10, 3, t_samp);
+	// ADC_InjectedChannelConfig(ADC2, ADC_Channel_11, 3, t_samp);
+	// ADC_InjectedChannelConfig(ADC3, ADC_Channel_12, 3, t_samp);
 }
 
 void hw_start_i2c(void) {

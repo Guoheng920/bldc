@@ -44,12 +44,13 @@
 #define HW_MINOR				0
 
 // HW properties
-#define HW_HAS_DRV8301
+//#define HW_HAS_DRV8301			//gh modify
 #define HW_HAS_3_SHUNTS
 #define HW_HAS_PHASE_SHUNTS
 #if !defined(HW60_IS_MK3) && !defined(HW60_IS_MK4) && !defined(HW60_IS_MK5) && !defined(HW60_IS_MK6)
-#define HW_HAS_PERMANENT_NRF
+//#define HW_HAS_PERMANENT_NRF		//gh modify
 #endif
+#define HW_HAS_NO_CAN		//gh modify
 
 // Macros
 #ifdef HW60_VEDDER_FIRST_PCB
@@ -63,10 +64,10 @@
 #define DCCAL_OFF()
 #define IS_DRV_FAULT()			(!palReadPad(GPIOB, 7))
 
-#define LED_GREEN_ON()			palSetPad(GPIOB, 0)
-#define LED_GREEN_OFF()			palClearPad(GPIOB, 0)
-#define LED_RED_ON()			palSetPad(GPIOB, 1)
-#define LED_RED_OFF()			palClearPad(GPIOB, 1)
+#define LED_RED_ON()			palSetPad(GPIOE, 0)//palSetPad(GPIOB, 0)
+#define LED_RED_OFF()			palClearPad(GPIOE, 0)//palClearPad(GPIOB, 0)
+#define LED_GREEN_ON()			palSetPad(GPIOE, 1)//palSetPad(GPIOB, 1)
+#define LED_GREEN_OFF()			palClearPad(GPIOE, 1)//palClearPad(GPIOB, 1)
 
 #define CURRENT_FILTER_ON()		palSetPad(GPIOD, 2)
 #define CURRENT_FILTER_OFF()	palClearPad(GPIOD, 2)
@@ -140,22 +141,22 @@
  */
 
 #define HW_ADC_INJ_CHANNELS		3
-#define HW_ADC_NBR_CONV			5
+#define HW_ADC_NBR_CONV			4//5
 #define HW_ADC_CHANNELS			(HW_ADC_NBR_CONV * 3)
 
 // ADC Indexes
-#define ADC_IND_SENS1			3
-#define ADC_IND_SENS2			4
-#define ADC_IND_SENS3			5
-#define ADC_IND_CURR1			0
-#define ADC_IND_CURR2			1
-#define ADC_IND_CURR3			2
-#define ADC_IND_VIN_SENS		11
-#define ADC_IND_EXT				6
-#define ADC_IND_EXT2			7
-#define ADC_IND_TEMP_MOS		8
-#define ADC_IND_TEMP_MOTOR		9
-#define ADC_IND_VREFINT			12
+#define ADC_IND_SENS1			5//3		//ADC3 IN7
+#define ADC_IND_SENS2			8//4		//ADC3 IN6
+#define ADC_IND_SENS3			11//5		//ADC3 IN5
+#define ADC_IND_CURR1			0		//ADC12 IN8	
+#define ADC_IND_CURR2			1		//ADC12 IN6
+#define ADC_IND_CURR3			2		//ADC123 IN3
+#define ADC_IND_VIN_SENS		3//11	//ADC12 IN9
+#define ADC_IND_EXT				//6
+#define ADC_IND_EXT2			//7
+//#define ADC_IND_TEMP_MOS		6//8	//ADC123 IN0
+#define ADC_IND_TEMP_MOTOR		//9
+#define ADC_IND_VREFINT			//12
 #if defined(HW60_IS_MK3) || defined(HW60_IS_MK4) || defined(HW60_IS_MK5) || defined(HW60_IS_MK6)
 #define ADC_IND_SHUTDOWN		10
 #endif
@@ -198,19 +199,19 @@
 #define V_REG					3.3
 #endif
 #ifndef VIN_R1
-#define VIN_R1					39000.0
+#define VIN_R1					24000.0//39000.0		//gh modify
 #endif
 #ifndef VIN_R2
-#define VIN_R2					2200.0
+#define VIN_R2					1000.0//2200.0			//gh modify
 #endif
 #ifndef CURRENT_AMP_GAIN
-#define CURRENT_AMP_GAIN		20.0
+#define CURRENT_AMP_GAIN		6	//20.0		//gh modify
 #endif
 #ifndef CURRENT_SHUNT_RES
 #ifdef HW60_IS_HP
 #define CURRENT_SHUNT_RES		0.0003
 #else
-#define CURRENT_SHUNT_RES		0.0005
+#define CURRENT_SHUNT_RES		0.002	//0.0005		//gh modify
 #endif
 #endif
 
